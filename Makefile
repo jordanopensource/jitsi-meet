@@ -51,6 +51,8 @@ deploy-appbundle:
 		$(BUILD_DIR)/video-blur-effect.min.map \
 		$(BUILD_DIR)/rnnoise-processor.min.js \
 		$(BUILD_DIR)/rnnoise-processor.min.map \
+		$(BUILD_DIR)/close3.min.js \
+		$(BUILD_DIR)/close3.min.map \
 		$(DEPLOY_DIR)
 
 deploy-lib-jitsi-meet:
@@ -74,7 +76,7 @@ deploy-rnnoise-binary:
 
 deploy-css:
 	$(NODE_SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
-	$(CLEANCSS) $(STYLES_BUNDLE) > $(STYLES_DESTINATION) ; \
+	$(CLEANCSS) --skip-rebase $(STYLES_BUNDLE) > $(STYLES_DESTINATION) ; \
 	rm $(STYLES_BUNDLE)
 
 deploy-local:
@@ -82,7 +84,7 @@ deploy-local:
 
 .NOTPARALLEL:
 dev: deploy-init deploy-css deploy-rnnoise-binary deploy-lib-jitsi-meet deploy-libflac
-	$(WEBPACK_DEV_SERVER)
+	$(WEBPACK_DEV_SERVER) --detect-circular-deps
 
 source-package:
 	mkdir -p source_package/jitsi-meet/css && \
